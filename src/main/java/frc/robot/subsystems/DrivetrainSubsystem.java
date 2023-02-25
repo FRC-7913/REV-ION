@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPRamseteCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -30,6 +31,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+
+import java.util.HashMap;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     private final MotorControllerGroup m_leftMotors =
@@ -94,6 +97,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_rightMotors.set(_right);
     }
 
+    public Command followPathWithMarkers(
+            PathPlannerTrajectory pathPlannerTrajectory,
+            HashMap<String, Command> eventMap
+    ) {
+        return new FollowPathWithEvents(
+                followTrajectoryCommand(pathPlannerTrajectory, false),
+                pathPlannerTrajectory.getMarkers(),
+                eventMap
+        );
+    }
+
     // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
     public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
         return new SequentialCommandGroup(
@@ -106,7 +120,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 new PPRamseteCommand(
                         traj,
                         this::getPose, // Pose supplier
-                        new RamseteController(),
+                        new RamseteController(Constants.Drivetrain.kRamseteB, Constants.Drivetrain.kRamseteZeta),
                         new SimpleMotorFeedforward(
                                 Constants.Drivetrain.ksVolts,
                                 Constants.Drivetrain.kvVoltSecondsPerMeter,
