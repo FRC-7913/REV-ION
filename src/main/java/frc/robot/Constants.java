@@ -24,11 +24,11 @@ public final class Constants {
         public static final double kArmManualDeadband = 0.05;
         public static final double kArmManualScale = 0.5;
     }
-    
+
     public static final class Drivetrain {
         public static final int kFrontLeftCanId = 1;
-        public static final int kFrontRightCanId = 2;
-        public static final int kRearLeftCanId = 3;
+        public static final int kFrontRightCanId = 3;
+        public static final int kRearLeftCanId = 2;
         public static final int kRearRightCanId = 4;
 
         public static final boolean kFrontLeftInverted = true;
@@ -49,7 +49,7 @@ public final class Constants {
         public static final double kSoftLimitReverse = 0.0;
         public static final double kSoftLimitForward = 4.6;
 
-        public static final double kArmGearRatio = 1.0 / (48.0 * 4.0); 
+        public static final double kArmGearRatio = 1.0 / (48.0 * 4.0);
         public static final double kPositionFactor = kArmGearRatio * 2.0 * Math.PI; //multiply SM value by this number and get arm position in radians
         public static final double kVelocityFactor = kArmGearRatio * 2.0 * Math.PI / 60.0;
         public static final double kArmFreeSpeed = 5676.0 * kVelocityFactor;
