@@ -7,12 +7,11 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -24,6 +23,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+    public final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
+
     // The robot's subsystems and commands are defined here...
     //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -37,6 +39,20 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+
+        // For each autonomous command
+        // autonomousChooser.addOption(NAME, COMMAND);
+        autonomousChooser.addOption(
+                "2 Second Drive",
+                new RunCommand(() -> m_drivetrain.driveArcade(0.5,0),
+                        m_drivetrain).withTimeout(2)
+                        .andThen(new InstantCommand(
+                                () -> m_drivetrain.driveArcade(0,0)) // Stop the drivetrain
+                        )
+        );
+
+        autonomousChooser.setDefaultOption("Do Nothing", new PrintCommand("Did nothing as an autonomous"));
+
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -92,6 +108,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return autonomousChooser.getSelected();
     }
 }
