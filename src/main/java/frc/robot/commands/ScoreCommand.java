@@ -8,22 +8,23 @@ import frc.robot.subsystems.GripperSubsystem;
 
 public class ScoreCommand extends SequentialCommandGroup {
     public ScoreCommand(ArmSubsystem armSubsystem, GripperSubsystem gripperSubsystem) {
-        // TODO: Add your sequential commands in the super() call, e.g.
-        //           super(new OpenClawCommand(), new MoveArmCommand());
         super(
                 // Run command needed to continuously update arm (command repeats until finished)
+                (new WaitCommand(2)).deadlineWith( // Gives time for it to finish, but times out after 2 seconds
                 new RunCommand(
-                        () -> {armSubsystem.setTargetPosition(Constants.Arm.kScoringPosition, gripperSubsystem);},
+                        () -> armSubsystem.setTargetPosition(Constants.Arm.kScoringPosition, gripperSubsystem),
                         armSubsystem
-                ),
+                )
+        ),
                 // Instant command works for gripper because the gripper updates position in its periodic
                 new InstantCommand(
                         gripperSubsystem::openGripper,
                         gripperSubsystem
                 ),
+                new WaitCommand(1),
                 new ParallelCommandGroup(
                         new RunCommand(
-                                () -> {armSubsystem.setTargetPosition(Constants.Arm.kHomePosition, gripperSubsystem);},
+                                () -> armSubsystem.setTargetPosition(Constants.Arm.kHomePosition, gripperSubsystem),
                                 armSubsystem
                         ),
                         new SequentialCommandGroup(
