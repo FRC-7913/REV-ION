@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
@@ -49,6 +50,10 @@ public class RobotContainer {
                         .andThen(new InstantCommand(
                                 () -> m_drivetrain.driveArcade(0,0)) // Stop the drivetrain
                         )
+        );
+        autonomousChooser.addOption(
+                "Score",
+                new ScoreCommand(m_arm, m_gripper)
         );
 
         autonomousChooser.setDefaultOption("Do Nothing", new PrintCommand("Did nothing as an autonomous"));
