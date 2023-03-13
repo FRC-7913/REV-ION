@@ -10,12 +10,10 @@ public class ScoreCommand extends SequentialCommandGroup {
     public ScoreCommand(ArmSubsystem armSubsystem, GripperSubsystem gripperSubsystem) {
         super(
                 // Run command needed to continuously update arm (command repeats until finished)
-                (new WaitCommand(2)).deadlineWith( // Gives time for it to finish, but times out after 2 seconds
                 new RunCommand(
                         () -> armSubsystem.setTargetPosition(Constants.Arm.kScoringPosition, gripperSubsystem),
                         armSubsystem
-                )
-        ),
+                ).withTimeout(2), // Gives time for it to finish, but times out after 2 seconds
                 // Instant command works for gripper because the gripper updates position in its periodic
                 new InstantCommand(
                         gripperSubsystem::openGripper,
@@ -34,7 +32,7 @@ public class ScoreCommand extends SequentialCommandGroup {
                                         gripperSubsystem
                                 )
                         )
-                )
+                ).withTimeout(5) // So that the command actually finishes
         );
     }
 }
