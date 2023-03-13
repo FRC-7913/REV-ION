@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 
@@ -20,6 +21,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private CANSparkMax m_frontRightMotor;
     private CANSparkMax m_rearLeftMotor;
     private CANSparkMax m_rearRightMotor;
+
+    private final Encoder leftEncoder;
+    private final Encoder rightEncoder;
 
     /** Creates a new DrivetrainSubsystem. */
     public DrivetrainSubsystem() {
@@ -46,6 +50,47 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_rearRightMotor.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
         m_rearRightMotor.setIdleMode(IdleMode.kBrake);
         m_rearRightMotor.burnFlash();
+
+        leftEncoder = new Encoder(5,6, true);
+        rightEncoder = new Encoder(1,2, false);
+
+    }
+
+    /**
+     * Resets the encoders on the drivetrain
+     */
+    public void resetEncoders() {
+        leftEncoder.reset();
+        rightEncoder.reset();
+    }
+
+    public double getAverageEncoderDistanceFeet() {
+
+        var leftEncoderDistance = leftEncoder.getDistance();
+        System.out.println("Left Encoder reported value of: " + leftEncoderDistance);
+
+        var rightEncoderDistance = rightEncoder.getDistance();
+        System.out.println("Right Encoder reported value of: " + rightEncoderDistance);
+
+        var averageValue = (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
+        System.out.println("Average value of encoders is: " + averageValue);
+
+        /* This is a complete voodoo magic formula
+        * Determined to work when asking robot to drive at 0.3 speed
+        * Tested on distances around 5 ft, though accuracy shouldn't decay too greatly past that
+        * The slip of the connection to the motor can be handled alright with the average
+        *  but the numbers from the encoders start to diverge after a while
+        * This might require using only the left encoder, since that one seems to be consistent
+        * The 0.66 was to account for a consistent 8-inch offset
+        * This may need to be scaled based on speed,
+        *  which probably means adding a variable
+        */
+        var distanceFeet = averageValue / 1200 + 0.66;
+        System.out.println("Reporting distance of: " + distanceFeet);
+
+        System.out.println();
+
+        return distanceFeet;
     }
 
     public void driveArcade(double _straight, double _turn) {
