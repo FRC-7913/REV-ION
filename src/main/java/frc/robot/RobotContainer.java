@@ -8,6 +8,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ArmSubsystem;
