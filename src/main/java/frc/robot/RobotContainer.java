@@ -8,7 +8,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -44,13 +46,15 @@ public class RobotContainer {
         // For each autonomous command
         // autonomousChooser.addOption(NAME, COMMAND);
         autonomousChooser.addOption(
-                "2 Second Drive",
-                new RunCommand(() -> m_drivetrain.driveArcade(0.5,0),
-                        m_drivetrain).withTimeout(2)
-                        .andThen(new InstantCommand(
-                                () -> m_drivetrain.driveArcade(0,0)) // Stop the drivetrain
-                        )
+                "Drive 5 Feet Forward",
+                new DriveDistanceCommand(5, 0.3, false, m_drivetrain)
         );
+
+        autonomousChooser.addOption(
+                "Drive 5 Feet Backward",
+                new DriveDistanceCommand(5, 0.3, true, m_drivetrain)
+        );
+
         autonomousChooser.addOption(
                 "Score",
                 new ScoreCommand(m_arm, m_gripper)
