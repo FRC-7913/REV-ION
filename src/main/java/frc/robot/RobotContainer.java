@@ -58,6 +58,8 @@ public class RobotContainer {
 
         autonomousChooser.setDefaultOption("Do Nothing", new PrintCommand("Did nothing as an autonomous"));
 
+        SmartDashboard.putData(autonomousChooser);
+
         // Configure the button bindings
         configureButtonBindings();
     }
