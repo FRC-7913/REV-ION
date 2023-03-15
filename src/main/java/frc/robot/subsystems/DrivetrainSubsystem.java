@@ -64,7 +64,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         rightEncoder.reset();
     }
 
-    public double getAverageEncoderDistanceFeet() {
+    public double getAverageEncoderDistanceFeetish() {
 
         var leftEncoderDistance = leftEncoder.getDistance();
         System.out.println("Left Encoder reported value of: " + leftEncoderDistance);
@@ -85,7 +85,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         * This may need to be scaled based on speed,
         *  which probably means adding a variable
         */
-        var distanceFeet = averageValue / 1200 + 0.66;
+        var distanceFeet = averageValue / 1200;
         System.out.println("Reporting distance of: " + distanceFeet);
 
         System.out.println();

@@ -50,9 +50,10 @@ public class RobotContainer {
                 new DriveDistanceCommand(5, 0.3, false, m_drivetrain)
         );
 
+        // Works to get out of short side
         autonomousChooser.addOption(
-                "Drive 5 Feet Backward",
-                new DriveDistanceCommand(5, 0.3, true, m_drivetrain)
+                "Drive 6 Feet Backward",
+                new DriveDistanceCommand(6, 0.3, true, m_drivetrain)
         );
 
         autonomousChooser.addOption(

@@ -22,8 +22,8 @@ public class DriveDistanceCommand extends FunctionalCommand {
                         0),
                 interrupted -> drivetrainSubsystem.driveArcade(0,0),
                 () -> backwards ?
-                        drivetrainSubsystem.getAverageEncoderDistanceFeet() <= -distanceFeet : // Going backwards
-                        drivetrainSubsystem.getAverageEncoderDistanceFeet() >= distanceFeet, // Going forwards
+                        drivetrainSubsystem.getAverageEncoderDistanceFeetish() - 1 <= -distanceFeet : // Going backwards
+                        drivetrainSubsystem.getAverageEncoderDistanceFeetish() + 0.66 >= distanceFeet, // Going forwards
                 drivetrainSubsystem
         );
     }
