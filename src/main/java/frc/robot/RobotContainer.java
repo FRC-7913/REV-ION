@@ -46,19 +46,14 @@ public class RobotContainer {
         // For each autonomous command
         // autonomousChooser.addOption(NAME, COMMAND);
         autonomousChooser.addOption(
-                "Drive 5 Feet Forward",
-                new DriveDistanceCommand(5, 0.3, false, m_drivetrain)
-        );
-
-        // Works to get out of short side
-        autonomousChooser.addOption(
-                "Drive 6 Feet Backward",
-                new DriveDistanceCommand(6, 0.3, true, m_drivetrain)
-        );
-
-        autonomousChooser.addOption(
-                "Score",
+                "Short Side Auto",
                 new ScoreCommand(m_arm, m_gripper)
+                        .andThen(new DriveDistanceCommand(6.5, 0.3, true, m_drivetrain))
+        );
+        autonomousChooser.addOption(
+                "Long Side Auto",
+                new ScoreCommand(m_arm, m_gripper)
+                        .andThen(new DriveDistanceCommand(12, 0.3, true, m_drivetrain))
         );
 
         autonomousChooser.setDefaultOption("Do Nothing", new PrintCommand("Did nothing as an autonomous"));
@@ -79,9 +74,9 @@ public class RobotContainer {
         //set up the drivetrain command that runs all the time
         m_drivetrain.setDefaultCommand(new RunCommand(
                 () ->
-                        m_drivetrain.tankDrive(
+                        m_drivetrain.driveArcade(
                                 MathUtil.applyDeadband(-m_driveController.getLeftY(), Constants.OIConstants.kDriveDeadband),
-                                MathUtil.applyDeadband(-m_driveController.getRightY(), Constants.OIConstants.kDriveDeadband))
+                                MathUtil.applyDeadband(m_driveController.getRightX(), Constants.OIConstants.kDriveDeadband))
                 , m_drivetrain)
         );
 
