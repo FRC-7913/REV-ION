@@ -41,6 +41,7 @@ public class ArmSubsystem extends SubsystemBase {
         m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
         m_motor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Arm.kSoftLimitForward);
         m_motor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Arm.kSoftLimitReverse);
+        m_motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
         m_encoder = m_motor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
         m_encoder.setPositionConversionFactor(Constants.Arm.kPositionFactor);
