@@ -9,9 +9,10 @@ import frc.robot.subsystems.GripperSubsystem;
 public class ScoreCommand extends SequentialCommandGroup {
     public ScoreCommand(ArmSubsystem armSubsystem, GripperSubsystem gripperSubsystem) {
         super(
+                new InstantCommand(() -> armSubsystem.setTargetPosition(Constants.Arm.kScoringPosition, gripperSubsystem), armSubsystem),
                 // Run command needed to continuously update arm (command repeats until finished)
                 new RunCommand(
-                        () -> armSubsystem.setTargetPosition(Constants.Arm.kScoringPosition, gripperSubsystem),
+                        armSubsystem::runAutomatic,
                         armSubsystem
                 ).withTimeout(2), // Gives time for it to finish, but times out after 2 seconds
                 // Instant command works for gripper because the gripper updates position in its periodic
@@ -20,9 +21,13 @@ public class ScoreCommand extends SequentialCommandGroup {
                         gripperSubsystem
                 ),
                 new WaitCommand(1),
+                new InstantCommand(
+                        () -> armSubsystem.setTargetPosition(Constants.Arm.kHomePosition, gripperSubsystem),
+                        armSubsystem
+                ),
                 new ParallelCommandGroup(
                         new RunCommand(
-                                () -> armSubsystem.setTargetPosition(Constants.Arm.kHomePosition, gripperSubsystem),
+                                armSubsystem::runAutomatic,
                                 armSubsystem
                         ),
                         new SequentialCommandGroup(
