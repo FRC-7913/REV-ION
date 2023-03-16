@@ -62,6 +62,10 @@ public class RobotContainer {
                         .andThen(new WaitCommand(1))
                         .andThen(new DriveDistanceCommand(8.75, 0.4, false, m_drivetrain))
         );
+        autonomousChooser.addOption(
+                "Just Score",
+                new ScoreCommand(m_arm, m_gripper)
+        );
 
         autonomousChooser.setDefaultOption("Do Nothing", new PrintCommand("Did nothing as an autonomous"));
 
