@@ -38,7 +38,7 @@ public class RobotContainer {
     private final ArmSubsystem m_arm = new ArmSubsystem();
     private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem();
 
-    private XboxController m_driveController = new XboxController(Constants.OIConstants.kDriverController);
+    private final XboxController m_driveController = new XboxController(Constants.OIConstants.kDriverController);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -96,27 +96,26 @@ public class RobotContainer {
 
         //set up gripper open/close
         new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-                .onTrue(new InstantCommand(() -> m_gripper.openGripper()))
-                .onFalse(new InstantCommand(() -> m_gripper.closeGripper()));
+                .onTrue(new InstantCommand(m_gripper::openGripper))
+                .onFalse(new InstantCommand(m_gripper::closeGripper));
 
         //set up arm preset positions
         new JoystickButton(m_driveController, XboxController.Button.kA.value)
-                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kHomePosition, m_gripper)));
+                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kHomePosition)));
         new JoystickButton(m_driveController, XboxController.Button.kX.value)
-                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kScoringPosition, m_gripper)));
+                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kScoringPosition)));
         new JoystickButton(m_driveController, XboxController.Button.kY.value)
-                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kIntakePosition, m_gripper)));
+                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kIntakePosition)));
         new JoystickButton(m_driveController, XboxController.Button.kB.value)
-                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kFeederPosition, m_gripper)));
+                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kFeederPosition)));
 
         new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
-                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeLowPosition, m_gripper)))
-                .toggleOnFalse(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeClearPosition, m_gripper)));
+                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeLowPosition)))
+                .toggleOnFalse(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeClearPosition)));
 
         //set up arm manual and auto functions
         m_arm.setDefaultCommand(new RunCommand(
-                () ->
-                        m_arm.runAutomatic()
+                m_arm::runAutomatic
                 , m_arm)
         );
         new Trigger(() ->

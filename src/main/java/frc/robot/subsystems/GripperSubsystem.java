@@ -19,9 +19,9 @@ import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 public class GripperSubsystem extends SubsystemBase {
-    private CANSparkMax m_motor;
-    private RelativeEncoder m_encoder;
-    private SparkMaxPIDController m_controller;
+    private final CANSparkMax m_motor;
+    private final RelativeEncoder m_encoder;
+    private final SparkMaxPIDController m_controller;
     private double m_setpoint;
     private double m_prevSetpoint;
 
@@ -74,6 +74,6 @@ public class GripperSubsystem extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addDoubleProperty("Setpoint", () -> m_setpoint, (val) -> m_setpoint = val);
-        builder.addDoubleProperty("Position", () -> m_encoder.getPosition(), null);
+        builder.addDoubleProperty("Position", m_encoder::getPosition, null);
     }
 }

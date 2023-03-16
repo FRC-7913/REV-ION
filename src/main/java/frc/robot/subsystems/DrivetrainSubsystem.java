@@ -17,10 +17,10 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    private CANSparkMax m_frontLeftMotor;
-    private CANSparkMax m_frontRightMotor;
-    private CANSparkMax m_rearLeftMotor;
-    private CANSparkMax m_rearRightMotor;
+    private final CANSparkMax m_frontLeftMotor;
+    private final CANSparkMax m_frontRightMotor;
+    private final CANSparkMax m_rearLeftMotor;
+    private final CANSparkMax m_rearRightMotor;
 
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;

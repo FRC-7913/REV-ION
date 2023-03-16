@@ -11,7 +11,7 @@ public class ScoreCommand extends ParallelDeadlineGroup {
         super(
                 Commands
                         .runOnce(
-                                () -> armSubsystem.setTargetPosition(Constants.Arm.kScoringPosition, gripperSubsystem)
+                                () -> armSubsystem.setTargetPosition(Constants.Arm.kScoringPosition)
                         )
                         .andThen(new WaitCommand(2))
                         .andThen(
@@ -26,7 +26,7 @@ public class ScoreCommand extends ParallelDeadlineGroup {
                         )
                         .andThen(
                                 new InstantCommand(
-                                        () -> armSubsystem.setTargetPosition(Constants.Arm.kHomePosition, gripperSubsystem)
+                                        () -> armSubsystem.setTargetPosition(Constants.Arm.kHomePosition)
                                 )
                         )
                         .andThen(

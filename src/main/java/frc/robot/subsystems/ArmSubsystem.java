@@ -20,13 +20,13 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ArmSubsystem extends SubsystemBase {
-    private CANSparkMax m_motor;
-    private RelativeEncoder m_encoder;
-    private SparkMaxPIDController m_controller;
+    private final CANSparkMax m_motor;
+    private final RelativeEncoder m_encoder;
+    private final SparkMaxPIDController m_controller;
     private double m_setpoint;
 
     private TrapezoidProfile m_profile;
-    private Timer m_timer;
+    private final Timer m_timer;
 
     private TrapezoidProfile.State targetState;
     private double feedforward;
@@ -61,7 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
         updateMotionProfile();
     }
 
-    public void setTargetPosition(double _setpoint, GripperSubsystem _gripper) {
+    public void setTargetPosition(double _setpoint) {
         if (_setpoint != m_setpoint) {
             m_setpoint = _setpoint;
             updateMotionProfile();
@@ -113,9 +113,9 @@ public class ArmSubsystem extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addDoubleProperty("Final Setpoint",   () -> m_setpoint, null);
-        builder.addDoubleProperty("Position", () -> m_encoder.getPosition(), null);
-        builder.addDoubleProperty("Applied Output", () -> m_motor.getAppliedOutput(), null);
-        builder.addDoubleProperty("Elapsed Time", () -> m_timer.get(), null);
+        builder.addDoubleProperty("Position", m_encoder::getPosition, null);
+        builder.addDoubleProperty("Applied Output", m_motor::getAppliedOutput, null);
+        builder.addDoubleProperty("Elapsed Time", m_timer::get, null);
         /*builder.addDoubleProperty("Target Position", () -> targetState.position, null);
         builder.addDoubleProperty("Target Velocity", () -> targetState.velocity, null);*/
         builder.addDoubleProperty("Feedforward", () -> feedforward, null);
