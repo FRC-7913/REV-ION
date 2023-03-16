@@ -62,6 +62,8 @@ public final class Constants {
         public static final double kScoringPosition = 3.05;
         public static final double kIntakePosition = 4.52;
         public static final double kFeederPosition = 2.95;
+        public static final double kGroundConeLowPosition = 4.189;
+        public static final double kGroundConeClearPosition = 3.83;
     }
 
     public static final class Gripper {

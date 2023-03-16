@@ -7,12 +7,14 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.DriveDistanceCommand;
+import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -24,6 +26,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+    public final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
+
     // The robot's subsystems and commands are defined here...
     //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -37,6 +42,38 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+
+        // For each autonomous command
+        // autonomousChooser.addOption(NAME, COMMAND);
+        autonomousChooser.addOption(
+                "Short Side Auto",
+                new ScoreCommand(m_arm, m_gripper)
+                        .andThen(new WaitCommand(0))
+                        .andThen(new DriveDistanceCommand(6.5, 0.3, true, m_drivetrain))
+        );
+        autonomousChooser.addOption(
+                "Long Side Auto",
+                new ScoreCommand(m_arm, m_gripper)
+                        .andThen(new WaitCommand(0))
+                        .andThen(new DriveDistanceCommand(12, 0.3, true, m_drivetrain))
+        );
+        autonomousChooser.addOption(
+                "Over Charge and Dock",
+                new ScoreCommand(m_arm, m_gripper)
+                        .andThen(new WaitCommand(0))
+                        .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
+                        .andThen(new WaitCommand(1))
+                        .andThen(new DriveDistanceCommand(8.75, 0.4, false, m_drivetrain))
+        );
+        autonomousChooser.addOption(
+                "Just Score",
+                new ScoreCommand(m_arm, m_gripper)
+        );
+
+        autonomousChooser.setDefaultOption("Do Nothing", new PrintCommand("Did nothing as an autonomous"));
+
+        SmartDashboard.putData(autonomousChooser);
+
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -51,9 +88,9 @@ public class RobotContainer {
         //set up the drivetrain command that runs all the time
         m_drivetrain.setDefaultCommand(new RunCommand(
                 () ->
-                        m_drivetrain.tankDrive(
+                        m_drivetrain.driveArcade(
                                 MathUtil.applyDeadband(-m_driveController.getLeftY(), Constants.OIConstants.kDriveDeadband),
-                                MathUtil.applyDeadband(-m_driveController.getRightY(), Constants.OIConstants.kDriveDeadband))
+                                MathUtil.applyDeadband(m_driveController.getRightX(), Constants.OIConstants.kDriveDeadband) * Constants.Drivetrain.kTurningScale)
                 , m_drivetrain)
         );
 
@@ -71,6 +108,10 @@ public class RobotContainer {
                 .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kIntakePosition, m_gripper)));
         new JoystickButton(m_driveController, XboxController.Button.kB.value)
                 .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kFeederPosition, m_gripper)));
+
+        new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
+                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeLowPosition, m_gripper)))
+                .toggleOnFalse(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeClearPosition, m_gripper)));
 
         //set up arm manual and auto functions
         m_arm.setDefaultCommand(new RunCommand(
@@ -92,6 +133,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return autonomousChooser.getSelected();
     }
 }
