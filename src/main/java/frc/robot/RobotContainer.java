@@ -55,6 +55,13 @@ public class RobotContainer {
                 new ScoreCommand(m_arm, m_gripper)
                         .andThen(new DriveDistanceCommand(12, 0.3, true, m_drivetrain))
         );
+        autonomousChooser.addOption(
+                "Over Charge and Dock",
+                new ScoreCommand(m_arm, m_gripper)
+                        .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
+                        .andThen(new WaitCommand(1))
+                        .andThen(new DriveDistanceCommand(8.75, 0.4, false, m_drivetrain))
+        );
 
         autonomousChooser.setDefaultOption("Do Nothing", new PrintCommand("Did nothing as an autonomous"));
 
