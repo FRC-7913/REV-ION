@@ -106,6 +106,10 @@ public class RobotContainer {
         new JoystickButton(m_driveController, XboxController.Button.kB.value)
                 .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kFeederPosition, m_gripper)));
 
+        new JoystickButton(m_driveController, XboxController.Button.kLeftBumper.value)
+                .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeLowPosition, m_gripper)))
+                .toggleOnFalse(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeClearPosition, m_gripper)));
+
         //set up arm manual and auto functions
         m_arm.setDefaultCommand(new RunCommand(
                 () ->
