@@ -119,6 +119,9 @@ public class RobotContainer {
                 .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeLowPosition)))
                 .toggleOnFalse(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeClearPosition)));
 
+        new JoystickButton(m_driveController, XboxController.Button.kStart.value)
+                .onTrue(new BalanceCommand(m_drivetrain));
+
         //set up arm manual and auto functions
         m_arm.setDefaultCommand(new RunCommand(
                 m_arm::runAutomatic
