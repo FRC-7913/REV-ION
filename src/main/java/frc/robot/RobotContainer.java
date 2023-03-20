@@ -102,8 +102,8 @@ public class RobotContainer {
         //set up arm preset positions
         new JoystickButton(m_driveController, XboxController.Button.kA.value)
                 .onTrue(new InstantCommand(() -> {
-                    m_arm.setTargetPosition(Constants.Arm.kHomePosition);
                     m_gripper.closeGripper();
+                    m_arm.setTargetPosition(Constants.Arm.kHomePosition);
                 }));
         new JoystickButton(m_driveController, XboxController.Button.kX.value)
                 .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kScoringPosition)));
