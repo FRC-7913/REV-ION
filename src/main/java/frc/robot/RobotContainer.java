@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -42,6 +43,8 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+
+        m_drivetrain.zeroGyro();
 
         // For each autonomous command
         // autonomousChooser.addOption(NAME, COMMAND);
