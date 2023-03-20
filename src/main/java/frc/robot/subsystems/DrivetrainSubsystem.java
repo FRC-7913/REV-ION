@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 
@@ -24,6 +26,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
+
+    private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
     /** Creates a new DrivetrainSubsystem. */
     public DrivetrainSubsystem() {
@@ -108,6 +112,27 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_frontRightMotor.set(_right);
         m_rearLeftMotor.set(_left);
         m_rearRightMotor.set(_right);
+    }
+
+    // NavX Gyroscope Methods //
+    public void calibrateGyro() {
+        navx.calibrate();
+    }
+    public void zeroGyro() {
+        System.out.println("NavX Connected: " + navx.isConnected());
+        navx.reset();
+    }
+    public double getYaw() {
+        return navx.getYaw();
+    }
+    public double getPitch() {
+        return navx.getPitch();
+    }
+    public double getRoll() {
+        return navx.getRoll();
+    }
+    public double getAngle() {
+        return navx.getAngle();
     }
 
     @Override
