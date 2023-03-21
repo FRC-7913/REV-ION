@@ -67,6 +67,14 @@ public class RobotContainer {
                         .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
                         .andThen(new WaitCommand(1))
                         .andThen(new DriveDistanceCommand(8.75, 0.4, false, m_drivetrain))
+        );
+        autonomousChooser.addOption(
+                "Over Charge and Dock With Balancer",
+                new ScoreCommand(m_arm, m_gripper)
+                        .andThen(new WaitCommand(0))
+                        .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
+                        .andThen(new WaitCommand(1))
+                        .andThen(new DriveDistanceCommand(8.65, 0.4, false, m_drivetrain))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
@@ -121,7 +129,7 @@ public class RobotContainer {
                 .toggleOnFalse(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kGroundConeClearPosition)));
 
         new JoystickButton(m_driveController, XboxController.Button.kStart.value)
-                .onTrue(new BalanceCommand(m_drivetrain));
+                .whileTrue(new BalanceCommand(m_drivetrain));
 
         //set up arm manual and auto functions
         m_arm.setDefaultCommand(new RunCommand(

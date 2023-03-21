@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 
@@ -27,7 +28,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
 
-    private final AHRS navx = new AHRS(SerialPort.Port.kMXP);
+    private final AHRS navx = new AHRS();
 
     /** Creates a new DrivetrainSubsystem. */
     public DrivetrainSubsystem() {
@@ -58,6 +59,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         leftEncoder = new Encoder(5,6, true);
         rightEncoder = new Encoder(1,2, false);
 
+        calibrateGyro();
     }
 
     /**
@@ -138,6 +140,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+
+        SmartDashboard.putData("Gyro", navx);
     }
 
     @Override
