@@ -25,6 +25,27 @@ public final class Constants {
         public static final double kArmManualScale = 0.5;
     }
 
+    public static final class AutoWait {
+        public enum AutoWaitLengths {
+            NONE,
+            SHORT,
+            LONG
+        } // Don't forget to add to getTime, otherwise you'll get 0
+
+        public static double getTime(AutoWaitLengths length) {
+            switch (length) {
+                case NONE:
+                    return 0;
+                case SHORT:
+                    return 2;
+                case LONG:
+                    return 5;
+                default:
+                    return 0;
+            }
+        }
+    }
+
     public static final class Drivetrain {
         public static final int kFrontLeftCanId = 1;
         public static final int kFrontRightCanId = 3;

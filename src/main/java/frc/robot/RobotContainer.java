@@ -29,6 +29,8 @@ public class RobotContainer {
 
     public final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 
+    public final SendableChooser<Constants.AutoWait.AutoWaitLengths> autoWaitLengthsChooser = new SendableChooser<>();
+
     // The robot's subsystems and commands are defined here...
     //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -42,6 +44,22 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+
+        for (Constants.AutoWait.AutoWaitLengths length: Constants.AutoWait.AutoWaitLengths.values()
+             ) {
+            String name = length.name(); // SHORT
+            name = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase(); // Short
+            name += " (" + Constants.AutoWait.getTime(length) + ")"; // Short (2)
+
+            if (length == Constants.AutoWait.AutoWaitLengths.NONE) {
+                autoWaitLengthsChooser.setDefaultOption(name, length);
+                continue;
+            }
+
+            autoWaitLengthsChooser.addOption(name, length);
+        }
+
+        SmartDashboard.putData("Autonomous Delay (seconds)", autoWaitLengthsChooser);
 
         // For each autonomous command
         // autonomousChooser.addOption(NAME, COMMAND);
@@ -135,6 +153,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return autonomousChooser.getSelected();
+        return new WaitCommand(
+                Constants.AutoWait.getTime(autoWaitLengthsChooser.getSelected())
+        ).andThen(
+                autonomousChooser.getSelected()
+        );
     }
 }
