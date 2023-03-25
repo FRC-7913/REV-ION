@@ -44,13 +44,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
         m_frontRightMotor.setIdleMode(IdleMode.kBrake);
         m_frontRightMotor.burnFlash();
 
-        m_rearLeftMotor   = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushed);
+        m_rearLeftMotor = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushed);
         m_rearLeftMotor.setInverted(Constants.Drivetrain.kRearLeftInverted);
         m_rearLeftMotor.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
         m_rearLeftMotor.setIdleMode(IdleMode.kBrake);
         m_rearLeftMotor.burnFlash();
 
-        m_rearRightMotor  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushed);
+        m_rearRightMotor = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushed);
         m_rearRightMotor.setInverted(Constants.Drivetrain.kRearRightInverted);
         m_rearRightMotor.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
         m_rearRightMotor.setIdleMode(IdleMode.kBrake);
