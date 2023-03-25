@@ -66,7 +66,7 @@ public class RobotContainer {
                         .andThen(new WaitCommand(0))
                         .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
                         .andThen(new WaitCommand(1))
-                        .andThen(new DriveDistanceCommand(8.75, 0.4, false, m_drivetrain))
+                        .andThen(new DriveDistanceCommand(8.7, 0.4, false, m_drivetrain))
         );
         autonomousChooser.addOption(
                 "Over Charge and Dock With Balancer",
@@ -74,7 +74,7 @@ public class RobotContainer {
                         .andThen(new WaitCommand(0))
                         .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
                         .andThen(new WaitCommand(1))
-                        .andThen(new DriveDistanceCommand(8.65, 0.4, false, m_drivetrain))
+                        .andThen(new DriveDistanceCommand(5.5, 0.4, false, m_drivetrain))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
