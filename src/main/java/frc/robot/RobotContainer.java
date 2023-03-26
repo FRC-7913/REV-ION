@@ -70,7 +70,7 @@ public class RobotContainer {
                 "Short Side Auto",
                 new ScoreCommand(m_arm, m_gripper)
                         .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(6.5, 0.3, true, m_drivetrain))
+                        .andThen(new DriveDistanceCommand(7.5, 0.3, true, m_drivetrain))
         );
         autonomousChooser.addOption(
                 "Long Side Auto",
@@ -92,7 +92,7 @@ public class RobotContainer {
                         .andThen(new WaitCommand(0))
                         .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
                         .andThen(new WaitCommand(1))
-                        .andThen(new DriveDistanceCommand(5.5, 0.4, false, m_drivetrain))
+                        .andThen(new DriveDistanceCommand(5.15, 0.4, false, m_drivetrain))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
