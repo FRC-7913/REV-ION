@@ -76,7 +76,8 @@ public class RobotContainer {
                 "Long Side Auto",
                 new ScoreCommand(m_arm, m_gripper)
                         .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(12, 0.6, true, m_drivetrain))
+                        .andThen(new RunCommand(() -> m_drivetrain.driveArcade(-0.6, 0)))
+                        .withTimeout(1.5)
         );
         autonomousChooser.addOption(
                 "Over Charge and Dock",
