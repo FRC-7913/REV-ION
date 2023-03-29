@@ -64,7 +64,10 @@ public final class Constants {
         public static final double beamBalancedDriveKP = 0.017; // P (Proportional) constant of PID loop
         public static final double beamBalancedGoalDegrees = 0;
         public static final double beamBalancedAngleThresholdDegrees = 10;
-        public static final double backwardBalancingExtraPowerMultiplier = 1.35;
+        public static final double backwardBalancingExtraPowerMultiplier = 1;
+
+        public static final double minOffLevelAngleDegrees = 10;
+        public static final double levelAngleThresholdDegrees = 1;
     }
 
     public static final class Arm {
@@ -101,10 +104,5 @@ public final class Constants {
         public static final double kSafePosition = -29.0;
         public static final int kCurrentLimit = 10;
         public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
-    }
-    public static final class BalanceCommand {
-        // The time in (roughly) seconds that the robot has to be level
-        //  before stopping the balance command
-        public static final double levelTime = 1.0;
     }
 }

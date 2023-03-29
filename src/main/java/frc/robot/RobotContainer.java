@@ -10,10 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.commands.BalanceCommand;
-import frc.robot.commands.DriveDistanceCommand;
-import frc.robot.commands.DriveUntilTiltCommand;
-import frc.robot.commands.ScoreCommand;
+import frc.robot.commands.*;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
@@ -84,24 +81,15 @@ public class RobotContainer {
                 "Over Charge and Dock",
                 new ScoreCommand(m_arm, m_gripper)
                         .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
+                        .andThen(new DriveOverTiltCommand(m_drivetrain, -1, 1.5))
                         .andThen(new WaitCommand(1))
-                        .andThen(new DriveDistanceCommand(8.7, 0.4, false, m_drivetrain))
-        );
-        autonomousChooser.addOption(
-                "Over Charge and Dock With Balancer",
-                new ScoreCommand(m_arm, m_gripper)
-                        .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(10, 0.4, true, m_drivetrain))
-                        .andThen(new InstantCommand(() -> m_drivetrain.driveArcade(0,0)))
-                        .andThen(new WaitCommand(1))
-                        .andThen(new DriveDistanceCommand(5.3, 0.4, false, m_drivetrain))
+                        .andThen(new DriveUntilTiltCommand(m_drivetrain, 1, 1))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
                 "Dock",
                 new ScoreCommand(m_arm, m_gripper)
-                        .andThen(new DriveUntilTiltCommand(m_drivetrain, -1))
+                        .andThen(new DriveUntilTiltCommand(m_drivetrain, -1, 1))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
