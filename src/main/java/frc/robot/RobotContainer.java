@@ -80,10 +80,12 @@ public class RobotContainer {
         autonomousChooser.addOption(
                 "Over Charge and Dock",
                 new ScoreCommand(m_arm, m_gripper)
-                        .andThen(new WaitCommand(0))
-                        .andThen(new DriveOverTiltCommand(m_drivetrain, -1, 1.5))
+                        .alongWith(
+                                new WaitCommand(4)
+                                .andThen(new DriveOverTiltCommand(m_drivetrain, -1, 1.5))
+                        )
                         .andThen(new WaitCommand(1))
-                        .andThen(new DriveUntilTiltCommand(m_drivetrain, 1, 1))
+                        .andThen(new DriveUntilTiltCommand(m_drivetrain, 1, 1.5))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(

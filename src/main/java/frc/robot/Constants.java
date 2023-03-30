@@ -61,7 +61,7 @@ public final class Constants {
 
         public static final double kTurningScale = 0.5;
 
-        public static final double beamBalancedDriveKP = 0.017; // P (Proportional) constant of PID loop
+        public static final double beamBalancedDriveKP = 0.018; // P (Proportional) constant of PID loop
         public static final double beamBalancedGoalDegrees = 0;
         public static final double beamBalancedAngleThresholdDegrees = 10;
         public static final double backwardBalancingExtraPowerMultiplier = 1;
