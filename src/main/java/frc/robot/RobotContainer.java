@@ -96,7 +96,7 @@ public class RobotContainer {
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
-                "Dock",
+                "Dock (without mobility)",
                 new ScoreCommand(m_arm, m_gripper)
                         .andThen(new DriveUntilTiltCommand(m_drivetrain, -1, 1))
                         .andThen(new BalanceCommand(m_drivetrain))
