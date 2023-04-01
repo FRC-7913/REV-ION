@@ -61,12 +61,50 @@ public final class Constants {
 
         public static final double kTurningScale = 0.5;
 
-        public static final double beamBalancedDriveKP = 0.018; // P (Proportional) constant of PID loop
+        /**
+         * The P value used in the {@link frc.robot.commands.BalanceCommand BalanceCommand} when balancing.
+         * <p>
+         *     This value is multiplied by the difference between the intended pitch (0°) and the current pitch,
+         *     and then fed to the motors to climb the charging station properly.
+         * </p>
+         * <br>
+         * <p>
+         *     If the robot is climbing too quickly and overshooting, consider lowering this value.
+         *     If it is not making it up, a higher P value may be necessary.
+         *     0.017 was used in competition to consistent (-1 instance) success.
+         * </p>
+         * <p>
+         *     Depending on where this is being used, consider changing other variables,
+         *     such as how long the robot drives for before switching to balancing.
+         *     This value is not merely a speed multiplier, but rather a determiner of how well the robot achieves balancing.
+         * </p>
+         */
+        public static final double beamBalancedDriveKP = 0.018;
+        /**
+         * The goal for the {@link frc.robot.commands.BalanceCommand BalanceCommand} to reach
+         */
         public static final double beamBalancedGoalDegrees = 0;
+        /**
+         * The angle threshold below which the {@link frc.robot.commands.BalanceCommand BalanceCommand} will <strong>end</strong>
+         * <p>
+         *     A higher value is used to stop the robot driving as the station tips to level,
+         *     instead of requiring back-and-forth balancing that can lead to failure to balance in time
+         * </p>
+         */
         public static final double beamBalancedAngleThresholdDegrees = 10;
+        /**
+         * A multiplier for speed when running the robot backwards when balancing.
+         * <p>This may not be necessary, but is available in case strange weight characteristics crop up in the robot
+         */
         public static final double backwardBalancingExtraPowerMultiplier = 1;
 
+        /**
+         * The angle above which the {@link frc.robot.commands.DriveOverTiltCommand DriveOverTiltCommand} considers itself not level
+         */
         public static final double minOffLevelAngleDegrees = 10;
+        /**
+         * The threshold within which the {@link frc.robot.commands.DriveOverTiltCommand DriveOverTiltCommand} considers itself level
+         */
         public static final double levelAngleThresholdDegrees = 1;
     }
 

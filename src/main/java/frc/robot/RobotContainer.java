@@ -87,7 +87,9 @@ public class RobotContainer {
         autonomousChooser.addOption(
                 "Over Charge and Dock",
                 new ScoreCommand(m_arm, m_gripper)
-                        .alongWith(
+                        .alongWith( // Begins driving while the ScoreCommand is finishing up, shaving out about a second
+                                // The .andThen block could be moved out in case of concerns for the safety of the arm,
+                                // As it just makes it down before the robot reaches the charging station
                                 new WaitCommand(4)
                                 .andThen(new DriveOverTiltCommand(m_drivetrain, -1, 1.5))
                         )
