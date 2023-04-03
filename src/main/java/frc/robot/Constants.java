@@ -79,7 +79,7 @@ public final class Constants {
          *     This value is not merely a speed multiplier, but rather a determiner of how well the robot achieves balancing.
          * </p>
          */
-        public static final double beamBalancedDriveKP = 0.017;
+        public static final double beamBalancedDriveKP = 0.0175;
         /**
          * The goal for the {@link frc.robot.commands.BalanceCommand BalanceCommand} to reach
          */
