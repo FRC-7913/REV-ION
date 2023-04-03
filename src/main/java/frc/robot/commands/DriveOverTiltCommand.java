@@ -45,7 +45,7 @@ public class DriveOverTiltCommand extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrainSubsystem.driveArcade(speed, 0);
+        drivetrainSubsystem.driveArcade(speed * ((hasTilted) ? 1.0 : 1.5), 0);
     }
 
     @Override
