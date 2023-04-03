@@ -94,7 +94,7 @@ public class RobotContainer {
                                 .andThen(new DriveOverTiltCommand(m_drivetrain, -1, 1.5))
                         )
                         .andThen(new WaitCommand(1))
-                        .andThen(new DriveUntilTiltCommand(m_drivetrain, 1, 1.5))
+                        .andThen(new DriveUntilTiltCommand(m_drivetrain, 1, 1.3))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
