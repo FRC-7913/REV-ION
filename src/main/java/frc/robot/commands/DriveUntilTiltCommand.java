@@ -13,12 +13,15 @@ public class DriveUntilTiltCommand extends CommandBase {
     /**
      * The time for which the robot has been at a non-zero pitch.
      * <p>
-     * As with the {@link DriveOverTiltCommand}, 0.02 is added to this on every iteration of the function, meaning it is not truly in seconds.
-     * Consider adding something using System.currentTimeMillis() or System.nanoTime() to calculate the number in actual seconds if the results are proving inconsistent
+     * As with the {@link DriveOverTiltCommand}, time elapsed (based on System.nanoTime()) is added to this on every iteration of the function
      */
-    private double time = 0.0;
+    private long time = 0;
+    /**
+     * A snapshot of the last System.nanoTime() when it was measured
+     */
+    private long deltaTime = 0;
 
-    private final double drivePastSeconds;
+    private final long drivePastNanoseconds;
 
     /**
      * Drives the robot until it reaches an incline
@@ -32,7 +35,7 @@ public class DriveUntilTiltCommand extends CommandBase {
         // addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.drivetrainSubsystem);
         speed = Math.copySign(speed, direction);
-        drivePastSeconds = _drivePastSeconds;
+        drivePastNanoseconds = (long) (_drivePastSeconds * 1000000000);
     }
 
     @Override
@@ -50,8 +53,10 @@ public class DriveUntilTiltCommand extends CommandBase {
     public boolean isFinished() {
 
         if (drivetrainSubsystem.getPitch() > 3 || drivetrainSubsystem.getPitch() < -3) {
-            time += 0.02;
-            if (time > drivePastSeconds) {
+            if (deltaTime == 0) deltaTime = System.nanoTime();
+            time += System.nanoTime() - deltaTime;
+            deltaTime = System.nanoTime();
+            if (time > drivePastNanoseconds) {
                 return drivetrainSubsystem.getPitch() > 3 || drivetrainSubsystem.getPitch() < -3;
             }
         }

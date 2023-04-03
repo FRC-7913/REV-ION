@@ -11,11 +11,14 @@ public class DriveOverTiltCommand extends CommandBase {
     /**
      * The time for which the robot has been at a non-zero pitch.
      * <p>
-     * As with the {@link DriveUntilTiltCommand}, 0.02 is added to this on every iteration of the function, meaning it is not truly in seconds.
-     * Consider adding something using System.currentTimeMillis() or System.nanoTime() to calculate the number in actual seconds if the results are proving inconsistent
+     * As with the {@link DriveUntilTiltCommand}, time elapsed (based on System.nanoTime()) is added to this on every iteration of the function
      */
-    private double time = 0.0;
-    private final double maxFlatTime;
+    private long time = 0;
+    /**
+     * A snapshot of the last System.nanoTime() when it was measured
+     */
+    private long deltaTime = 0;
+    private final long maxFlatTime;
     private boolean hasTilted = false;
 
     /**
@@ -26,7 +29,7 @@ public class DriveOverTiltCommand extends CommandBase {
      */
     public DriveOverTiltCommand(DrivetrainSubsystem drivetrainSubsystem, int direction, double flatTime) {
 
-        maxFlatTime = flatTime;
+        maxFlatTime = (long) (flatTime * 1000000000);
         speed = Math.copySign(speed, direction);
 
         this.drivetrainSubsystem = drivetrainSubsystem;
@@ -50,6 +53,8 @@ public class DriveOverTiltCommand extends CommandBase {
 
         double pitch = drivetrainSubsystem.getPitch();
 
+        if (deltaTime == 0) deltaTime = System.nanoTime();
+
         if (!hasTilted)
             hasTilted = pitch > Constants.Drivetrain.minOffLevelAngleDegrees ||
                     pitch < -Constants.Drivetrain.minOffLevelAngleDegrees;
@@ -57,7 +62,9 @@ public class DriveOverTiltCommand extends CommandBase {
         else
             time += (pitch < Constants.Drivetrain.levelAngleThresholdDegrees ||
                     pitch > -Constants.Drivetrain.levelAngleThresholdDegrees) ?
-                    0.02 : 0; // Adds 0.02 seconds (loop time for functions) whenever the angle is outside the threshold
+                    System.nanoTime() - deltaTime : 0; // Adds 0.02 seconds (loop time for functions) whenever the angle is outside the threshold
+
+        deltaTime = System.nanoTime();
 
         return (time >= maxFlatTime);
     }
