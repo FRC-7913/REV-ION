@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.commands.BalanceCommand;
-import frc.robot.commands.DriveDistanceCommand;
-import frc.robot.commands.ScoreCommand;
+import frc.robot.commands.*;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
@@ -70,29 +68,39 @@ public class RobotContainer {
                 "Short Side Auto",
                 new ScoreCommand(m_arm, m_gripper)
                         .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(7.5, 0.3, true, m_drivetrain))
+                        .andThen(
+                                new RunCommand(() -> m_drivetrain.driveArcade(-0.6, 0), m_drivetrain)
+                                        .withTimeout(1.0)
+                        )
+
         );
         autonomousChooser.addOption(
                 "Long Side Auto",
                 new ScoreCommand(m_arm, m_gripper)
                         .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(12, 0.6, true, m_drivetrain))
+                        .andThen(
+                                new RunCommand(() -> m_drivetrain.driveArcade(-0.6, 0), m_drivetrain)
+                                        .withTimeout(1.7)
+                        )
+
         );
         autonomousChooser.addOption(
                 "Over Charge and Dock",
                 new ScoreCommand(m_arm, m_gripper)
-                        .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
+                        .alongWith( // Begins driving while the ScoreCommand is finishing up, shaving out about a second
+                                // The .andThen block could be moved out in case of concerns for the safety of the arm,
+                                // As it just makes it down before the robot reaches the charging station
+                                new WaitCommand(4)
+                                .andThen(new DriveOverTiltCommand(m_drivetrain, -1, 1.5))
+                        )
                         .andThen(new WaitCommand(1))
-                        .andThen(new DriveDistanceCommand(8.7, 0.4, false, m_drivetrain))
+                        .andThen(new DriveUntilTiltCommand(m_drivetrain, 1, 1.3))
+                        .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
-                "Over Charge and Dock With Balancer",
+                "Dock (without mobility)",
                 new ScoreCommand(m_arm, m_gripper)
-                        .andThen(new WaitCommand(0))
-                        .andThen(new DriveDistanceCommand(13.5, 0.4, true, m_drivetrain))
-                        .andThen(new WaitCommand(1))
-                        .andThen(new DriveDistanceCommand(5.15, 0.4, false, m_drivetrain))
+                        .andThen(new DriveUntilTiltCommand(m_drivetrain, -1, 1))
                         .andThen(new BalanceCommand(m_drivetrain))
         );
         autonomousChooser.addOption(
